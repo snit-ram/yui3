@@ -48,13 +48,21 @@
                             #doc3 .classopts { display:none; }
                         </style>
                         <div class="highlight"><pre><span class="cm">/**</span>
-<span class="cm"> * History hash module</span>
+<span class="cm"> * The history-hash module adds the History class, which provides browser</span>
+<span class="cm"> * history management functionality backed by &lt;code&gt;window.location.hash&lt;/code&gt;.</span>
+<span class="cm"> * This allows the browser&#39;s back and forward buttons to be used to navigate</span>
+<span class="cm"> * between states.</span>
+<span class="cm"> *</span>
 <span class="cm"> * @module history</span>
 <span class="cm"> * @submodule history-hash</span>
 <span class="cm"> */</span>
 
 <span class="cm">/**</span>
-<span class="cm"> * History class</span>
+<span class="cm"> * The History class provides browser history management backed by</span>
+<span class="cm"> * &lt;code&gt;window.location.hash&lt;/code&gt;, as well as convenience methods for working</span>
+<span class="cm"> * with the location hash and a synthetic &lt;code&gt;hashchange&lt;/code&gt; event that</span>
+<span class="cm"> * normalizes differences across browsers.</span>
+<span class="cm"> *</span>
 <span class="cm"> * @class History</span>
 <span class="cm"> * @extends HistoryBase</span>
 <span class="cm"> * @constructor</span>
