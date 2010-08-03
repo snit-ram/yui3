@@ -70,6 +70,10 @@
     <span class="nx">MOVE</span> <span class="o">=</span> <span class="s2">&quot;move&quot;</span><span class="p">,</span>
     <span class="nx">END</span> <span class="o">=</span> <span class="s2">&quot;end&quot;</span><span class="p">,</span>
 
+    <span class="nx">GESTURE_MOVE</span> <span class="o">=</span> <span class="s2">&quot;gesture&quot;</span> <span class="o">+</span> <span class="nx">MOVE</span><span class="p">,</span>
+    <span class="nx">GESTURE_MOVE_END</span> <span class="o">=</span> <span class="nx">GESTURE_MOVE</span> <span class="o">+</span> <span class="nx">END</span><span class="p">,</span>
+    <span class="nx">GESTURE_MOVE_START</span> <span class="o">=</span> <span class="nx">GESTURE_MOVE</span> <span class="o">+</span> <span class="nx">START</span><span class="p">,</span>
+
     <span class="nx">_MOVE_START_HANDLE</span> <span class="o">=</span> <span class="s2">&quot;_msh&quot;</span><span class="p">,</span>
     <span class="nx">_MOVE_HANDLE</span> <span class="o">=</span> <span class="s2">&quot;_mh&quot;</span><span class="p">,</span>
     <span class="nx">_MOVE_END_HANDLE</span> <span class="o">=</span> <span class="s2">&quot;_meh&quot;</span><span class="p">,</span>
@@ -145,7 +149,7 @@
 <span class="cm"> * @return {EventHandle} the detach handle</span>
 <span class="cm"> */</span>
 
-<span class="nx">define</span><span class="p">(</span><span class="s1">&#39;gesturemovestart&#39;</span><span class="p">,</span> <span class="p">{</span>
+<span class="nx">define</span><span class="p">(</span><span class="nx">GESTURE_MOVE_START</span><span class="p">,</span> <span class="p">{</span>
 
     <span class="nx">on</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">subscriber</span><span class="p">,</span> <span class="nx">ce</span><span class="p">)</span> <span class="p">{</span>
 
@@ -208,20 +212,18 @@
 
         <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">subscriber</span><span class="p">.</span><span class="nx">_extra</span><span class="p">,</span>
             <span class="nx">fireStart</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
-            <span class="nx">minTime</span> <span class="o">=</span> <span class="nx">params</span><span class="p">.</span><span class="nx">minTime</span><span class="p">,</span>
-            <span class="nx">minDistance</span> <span class="o">=</span> <span class="nx">params</span><span class="p">.</span><span class="nx">minDistance</span><span class="p">,</span>
+            <span class="nx">minTime</span> <span class="o">=</span> <span class="nx">params</span><span class="p">[</span><span class="nx">MIN_TIME</span><span class="p">],</span>
+            <span class="nx">minDistance</span> <span class="o">=</span> <span class="nx">params</span><span class="p">[</span><span class="nx">MIN_DISTANCE</span><span class="p">],</span>
             <span class="nx">button</span> <span class="o">=</span> <span class="nx">params</span><span class="p">.</span><span class="nx">button</span><span class="p">,</span>
-            <span class="nx">preventDefault</span> <span class="o">=</span> <span class="nx">params</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">,</span>
+            <span class="nx">preventDefault</span> <span class="o">=</span> <span class="nx">params</span><span class="p">[</span><span class="nx">PREVENT_DEFAULT</span><span class="p">],</span>
             <span class="nx">root</span> <span class="o">=</span> <span class="nx">_getRoot</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">subscriber</span><span class="p">),</span>
             <span class="nx">startXY</span><span class="p">;</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">touches</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">touches</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">touches</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="nx">_normTouchFacade</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">touches</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">params</span><span class="p">);</span>
-                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                    <span class="nx">fireStart</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-                <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">touches</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">_normTouchFacade</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">touches</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">params</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">fireStart</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
             <span class="p">}</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
             <span class="nx">fireStart</span> <span class="o">=</span> <span class="p">(</span><span class="nx">button</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nx">button</span> <span class="o">===</span> <span class="nx">e</span><span class="p">.</span><span class="nx">button</span><span class="p">);</span>
@@ -295,7 +297,7 @@
             <span class="k">this</span><span class="p">.</span><span class="nx">_cancel</span><span class="p">(</span><span class="nx">params</span><span class="p">);</span>
         <span class="p">}</span>
 
-        <span class="nx">e</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="s2">&quot;gesturemovestart&quot;</span><span class="p">;</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="nx">GESTURE_MOVE_START</span><span class="p">;</span>
 
         <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;gesturemovestart: Firing start: &quot;</span> <span class="o">+</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">(),</span> <span class="s2">&quot;event-gestures&quot;</span><span class="p">);</span>
 
@@ -337,7 +339,7 @@
 <span class="cm"> *</span>
 <span class="cm"> * @return {EventHandle} the detach handle</span>
 <span class="cm"> */</span>
-<span class="nx">define</span><span class="p">(</span><span class="s1">&#39;gesturemove&#39;</span><span class="p">,</span> <span class="p">{</span>
+<span class="nx">define</span><span class="p">(</span><span class="nx">GESTURE_MOVE</span><span class="p">,</span> <span class="p">{</span>
 
     <span class="nx">on</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">subscriber</span><span class="p">,</span> <span class="nx">ce</span><span class="p">)</span> <span class="p">{</span>
 
@@ -419,7 +421,7 @@
 
                 <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;onMove second fireMove check:&quot;</span> <span class="o">+</span> <span class="nx">fireMove</span><span class="p">,</span><span class="s2">&quot;event-gestures&quot;</span><span class="p">);</span>
 
-                <span class="nx">e</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="s2">&quot;gesturemove&quot;</span><span class="p">;</span>
+                <span class="nx">e</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="nx">GESTURE_MOVE</span><span class="p">;</span>
                 <span class="nx">ce</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">}</span>
@@ -457,7 +459,7 @@
 <span class="cm"> *</span>
 <span class="cm"> * @return {EventHandle} the detach handle</span>
 <span class="cm"> */</span>
-<span class="nx">define</span><span class="p">(</span><span class="s1">&#39;gesturemoveend&#39;</span><span class="p">,</span> <span class="p">{</span>
+<span class="nx">define</span><span class="p">(</span><span class="nx">GESTURE_MOVE_END</span><span class="p">,</span> <span class="p">{</span>
 
     <span class="nx">on</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">subscriber</span><span class="p">,</span> <span class="nx">ce</span><span class="p">)</span> <span class="p">{</span>
 
@@ -535,7 +537,7 @@
                     <span class="p">}</span>
                 <span class="p">}</span>
 
-                <span class="nx">e</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="s2">&quot;gesturemoveend&quot;</span><span class="p">;</span>
+                <span class="nx">e</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="nx">GESTURE_MOVE_END</span><span class="p">;</span>
                 <span class="nx">ce</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
 
                 <span class="nx">node</span><span class="p">.</span><span class="nx">clearData</span><span class="p">(</span><span class="nx">_MOVE_START</span><span class="p">);</span>
