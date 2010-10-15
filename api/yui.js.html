@@ -65,7 +65,16 @@
 <span class="cm"> * namespaces are preserved.  It is the constructor for the object</span>
 <span class="cm"> * the end user interacts with.  As indicated below, each instance</span>
 <span class="cm"> * has full custom event support, but only if the event system</span>
-<span class="cm"> * is available.</span>
+<span class="cm"> * is available.  This is a self-instantiable factory function.  You</span>
+<span class="cm"> * can invoke it directly like this:</span>
+<span class="cm"> *</span>
+<span class="cm"> * YUI().use(&#39;*&#39;, function(Y) {</span>
+<span class="cm"> *   // ready</span>
+<span class="cm"> * });</span>
+<span class="cm"> *</span>
+<span class="cm"> * But it also works like this:</span>
+<span class="cm"> *</span>
+<span class="cm"> * var Y = YUI();</span>
 <span class="cm"> *</span>
 <span class="cm"> * @class YUI</span>
 <span class="cm"> * @constructor</span>
