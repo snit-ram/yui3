@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+an<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
 <title>objectassert tests</title>
@@ -282,6 +282,90 @@ YUI({
             }
 
         }));
+
+
+        //-------------------------------------------------------------------------
+        // Test Case for areEqual()
+        //-------------------------------------------------------------------------
+
+        suite.add(new Y.Test.Case({
+
+            name : "areEqual() Tests",
+
+            _should: {
+                fail: {
+                    "areEqual() should fail for incomplete actual object": true,
+                    "areEqual() should fail for incomplete expected object" : true,
+                    "areEqual() should fails for objects with different arrays" : true
+                }
+            },
+
+            /*
+             * Tests that areEqual() passes when comparing two empty objects
+             */
+            "areEqual() should pass for two empty objects": function(){
+                var expected = {};
+                var actual = {};
+                ObjectAssert.areEqual(expected, actual);
+            },
+
+            /*
+             * Tests that areEqual() passes when comparing two similar objects
+             */
+            "areEqual() should pass for two similar objects": function(){
+                var expected = { msg : 'hello' };
+                var actual = { msg : 'hello' };
+
+                ObjectAssert.areEqual(expected, actual);
+            },
+
+
+            /*
+             * Tests that areEqual() fails when there is a missing attribute
+             * in actual object
+             */
+            "areEqual() should fail for incomplete actual object": function(){
+                var expected = { msg : 'hello', status : 'ok' };
+                var actual = { msg : 'hello' };
+
+                ObjectAssert.areEqual(expected, actual);
+            },
+
+            /*
+             * Tests that areEqual() fails when there is a missing attribute
+             * in expected object
+             */
+            "areEqual() should fail for incomplete expected object": function(){
+                var expected = { msg : 'hello' };
+                var actual = { msg : 'hello', status : 'ok' };
+
+                ObjectAssert.areEqual(expected, actual);
+            },
+
+            /*
+             * Tests that areEqual() passes when comparing objets with similar
+             * arrays in attributes
+             */
+            "areEqual() should pass for objects with similar arrays": function(){
+                var expected = { msg : [ 'hello', 'world' ] };
+                var actual = { msg : [ 'hello', 'world' ] };
+
+                ObjectAssert.areEqual(expected, actual);
+            },
+
+            /*
+             * Tests that areEqual() fails when comparing objets with different
+             * arrays in attributes
+             */
+            "areEqual() should fails for objects with different arrays": function(){
+                var expected = { msg : [ 'hello', 'world' ] };
+                var actual = { msg : [ 'hello', 'planet' ] };
+
+                ObjectAssert.areEqual(expected, actual);
+            }
+
+        }));
+
 
         //return it
         return suite;
